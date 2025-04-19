@@ -1,0 +1,43 @@
+# Python
+*.py[cod]
+__pycache__/
+*.pyo
+*.pyd
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Django
+*.log
+*.sqlite3
+db.sqlite3
+/media
+/static
+/venv
+
+# IDEs and Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Pytest
+*.cover
+.cover/
+*.test
+
+# Environment Variables
+.env
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints
+# poetyr
+poetry.lock
+pyproject.*
+
+# static
+staticfiles/
+# data like libs and  models
+data/

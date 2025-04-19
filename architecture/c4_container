@@ -1,0 +1,48 @@
+@startuml
+' Include the C4-PlantUML definitions
+!if %variable_exists("RELATIVE_INCLUDE")
+  !include %get_variable_value("RELATIVE_INCLUDE")/C4_Container.puml
+!else
+  !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!endif
+
+LAYOUT_TOP_DOWN()
+
+title Container Diagram: Customer Financial Intelligence
+
+System(ExternalCustomerData, "External Customer Data", "Provides additional customer information.")
+
+
+System_Boundary(CFI_Boundary, "Customer Financial Intelligence") {
+
+    ' Second row - Metabase and Jupyter
+    Container(metabase, "Metabase", "Visualization Tool", "Allows querying and visualizing data.")
+    Container(jupyter_server, "Jupyter Notebook Server", "Jupyter", "Data scientists connect to gain insights.")
+    
+    ' Third row - FID (Financial Intelligence DB) and CDM (Customer Data Mart)
+    ContainerDb(financial_intel_db, "Financial Intelligence DB", "PostgreSQL", "Stores insights for each customer.")
+    ContainerDb(customer_data_mart, "Customer Data Mart", "Elasticsearch", "Stores daily features for each user.")
+    
+    ' Fourth row - External Data
+    Container(crawler, "Crawler", "API Calls, Selenium", "Crawls external customer information.")
+    Container(airflow, "Airflow", "Job Scheduler", "Schedules and orchestrates jobs.")
+}
+
+    ContainerDb(MofidDw, "MofidDw", "Clickhouse", "Stores and aggregates customer data.")
+
+
+    Person(data_scientist, "Data Scientist", "Queries and analyzes data.")
+
+' Relationships
+Rel(crawler, ExternalCustomerData, "Fetches external customer data")
+Rel(data_scientist, jupyter_server, "Connects for insights")
+Rel(data_scientist, metabase, "Queries and visualizes data")
+Rel(jupyter_server, MofidDw, "Queries for analysis")
+Rel(jupyter_server, financial_intel_db, "Queries for insights")
+Rel(jupyter_server, customer_data_mart, "Queries for data features")
+Rel(metabase, MofidDw, "Queries for visualizations")
+Rel(metabase, financial_intel_db, "Queries for insights")
+Rel(airflow, MofidDw, "Schedules jobs and reads/writes data")
+Rel(airflow, customer_data_mart, "Schedules jobs and reads/writes data")
+Rel(crawler, financial_intel_db, "Stores external customer data insights")
+@enduml

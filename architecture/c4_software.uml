@@ -1,0 +1,26 @@
+@startuml
+' Include the C4-PlantUML definitions
+!if %variable_exists("RELATIVE_INCLUDE")
+  !include %get_variable_value("RELATIVE_INCLUDE")/C4_Container.puml
+!else
+  !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!endif
+
+LAYOUT_TOP_DOWN()
+title System Context: Customer Financial Intelligence
+
+' Define software systems
+System(CFI, "Customer Financial Intelligence", "Provides financial insights.")
+ContainerDb(MofidDw, "MofidDw", "SQL Server", "Stores and aggregate customer data.")
+
+' Define external actor
+Person(DataScientist, "Data Scientist", "Queries and analyzes data.")
+System(ExternalCustomerData, "External Customer Data", "Provides additional customer information.")
+
+
+' Relationships
+Rel(DataScientist, CFI, "Interacts with")
+Rel(DataScientist, MofidDw, "Feature Engineering and Simple Reports")
+Rel(CFI, MofidDw, "Reads/Writes data")
+Rel(CFI, ExternalCustomerData, "Consumes external customer information")
+@enduml

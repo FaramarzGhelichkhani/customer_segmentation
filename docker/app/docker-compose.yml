@@ -1,0 +1,22 @@
+services:
+  web:
+    container_name: customer_segmentation
+    command :  bash -c "/app/docker/app/entrypoint.sh"
+    build: .
+    volumes:
+      - ../../:/app
+      - static_volume:/app/staticfiles
+    env_file:
+      - ../../.env  
+    environment:
+      - TZ=Asia/Tehran
+    networks:
+      - customer_segmentation_project_network    
+
+volumes:
+  static_volume:
+    external: true
+
+networks:
+  customer_segmentation_project_network:
+    external: true
